@@ -1,7 +1,5 @@
 import streamlit as st
 import json
-import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'path/to/your/service-account-key.json'
 from google.analytics.admin_v1.types import CustomChannelGroup
 from google.analytics.admin import AnalyticsAdminServiceClient
 from google.api_core import exceptions
@@ -37,14 +35,12 @@ def create_custom_channel_group(property_id: str, credentials_info: dict):
             system_defined=CHANNEL_GROUP_DEFINITION["system_defined"],
             grouping_rule=CHANNEL_GROUP_DEFINITION["grouping_rule"],
         )
-
         request = client.create_custom_channel_group(
             parent=f"properties/{property_id}",
             custom_channel_group=channel_group,
         )
         # Instead of printing, we return a success message.
         return f"✅ Success! Channel group created with name: {request.name}"
-
     except exceptions.PermissionDenied:
         raise Exception(f"🔴 ERROR: Permission denied for property {property_id}. Ensure the service account has 'Editor' role.")
     except exceptions.InvalidArgument as e:
@@ -53,10 +49,8 @@ def create_custom_channel_group(property_id: str, credentials_info: dict):
         raise Exception(f"🔴 An unexpected error occurred: {e}")
 
 # --- Streamlit Web Interface ---
-
 st.set_page_config(page_title="GA4 Channel Group Creator", layout="centered")
 st.title("GA4 Custom Channel Group Creator 🚀")
-
 st.info("This tool uses the GA4 Admin API to create a predefined Custom Channel Group on the property you specify.")
 
 # Create a form for user input
