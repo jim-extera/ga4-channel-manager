@@ -19,7 +19,7 @@ CHANNEL_GROUP_DEFINITION = {
                             "or_group": {
                                 "filter_expressions": [{
                                     "filter": {
-                                        "field_name": "sessionSource",
+                                        "field_name": "source",
                                         "string_filter": {"match_type": "EXACT", "value": "(direct)"}
                                     }
                                 }]
@@ -30,7 +30,7 @@ CHANNEL_GROUP_DEFINITION = {
                             "or_group": {
                                 "filter_expressions": [{
                                     "filter": {
-                                        "field_name": "sessionMedium",
+                                        "field_name": "medium",
                                         "string_filter": {"match_type": "EXACT", "value": "(none)"}
                                 }
                             }]
@@ -43,7 +43,7 @@ CHANNEL_GROUP_DEFINITION = {
                 # --- FIX: This rule is now correctly wrapped in a top-level and_group ---
                 "and_group": {
                     "filter_expressions": [
-                        {"or_group": {"filter_expressions": [{"filter": {"field_name": "sessionMedium", "string_filter": {"match_type": "EXACT", "value": "organic"}}}]}}
+                        {"or_group": {"filter_expressions": [{"filter": {"field_name": "medium", "string_filter": {"match_type": "EXACT", "value": "organic"}}}]}}
                     ]
                 }
             }
@@ -57,7 +57,7 @@ CHANNEL_GROUP_DEFINITION = {
                           "or_group": {
                               "filter_expressions": [{
                             "filter": {
-                                "field_name": "sessionMedium",
+                                "field_name": "medium",
                                 "string_filter": {
                                     "match_type": "EXACT", 
                                     "value": "social"
@@ -68,7 +68,7 @@ CHANNEL_GROUP_DEFINITION = {
                               "or_group": {
                         "filter_expressions": [{ 
                             "filter": {
-                                "field_name": "sessionSource",
+                                "field_name": "source",
                                 "string_filter": {
                                     "match_type": "CONTAINS",
                                     "value": "facebook"
