@@ -47,7 +47,7 @@ def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
         access_token = get_access_token(credentials_info)
         
         # URL dell'API GA4 Admin - Prova con v1alpha e channelGroups
-        url = f"https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/channelGroups"
+        url = f"https://analyticsadmin.googleapis.com/v1beta/properties/{property_id}/channelGroups"
         
         # Headers per la richiesta
         headers = {
