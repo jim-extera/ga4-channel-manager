@@ -6,28 +6,28 @@ from google.auth.transport.requests import Request
 
 # --- YOUR CUSTOM CHANNEL GROUP DEFINITION ---
 CHANNEL_GROUP_DEFINITION = {
-    "displayName": "My Custom Marketing Channels",
+    "display_name": "My Custom Marketing Channels",
     "description": "Custom channel group for primary marketing activities.",
-    "groupingRule": [
+    "grouping_rule": [
         {
-            "displayName": "Direct",
+            "display_name": "Direct",
             "expression": {
-                "andGroup": {
-                    "expressions": [
+                "and_group": {
+                    "filter_expressions": [
                         {
-                            "dimensionOrMetricFilter": {
-                                "fieldName": "sessionSource",
-                                "stringFilter": {
-                                    "matchType": "EXACT",
+                            "dimension_or_metric_filter": {
+                                "field_name": "sessionSource",
+                                "string_filter": {
+                                    "match_type": "EXACT",
                                     "value": "(direct)"
                                 }
                             }
                         },
                         {
-                            "dimensionOrMetricFilter": {
-                                "fieldName": "sessionMedium", 
-                                "stringFilter": {
-                                    "matchType": "EXACT",
+                            "dimension_or_metric_filter": {
+                                "field_name": "sessionMedium", 
+                                "string_filter": {
+                                    "match_type": "EXACT",
                                     "value": "(none)"
                                 }
                             }
@@ -37,45 +37,45 @@ CHANNEL_GROUP_DEFINITION = {
             }
         },
         {
-            "displayName": "Organic Search",
+            "display_name": "Organic Search",
             "expression": {
-                "dimensionOrMetricFilter": {
-                    "fieldName": "sessionMedium",
-                    "stringFilter": {
-                        "matchType": "EXACT",
+                "dimension_or_metric_filter": {
+                    "field_name": "sessionMedium",
+                    "string_filter": {
+                        "match_type": "EXACT",
                         "value": "organic"
                     }
                 }
             }
         },
         {
-            "displayName": "Social",
+            "display_name": "Social",
             "expression": {
-                "orGroup": {
-                    "expressions": [
+                "or_group": {
+                    "filter_expressions": [
                         {
-                            "dimensionOrMetricFilter": {
-                                "fieldName": "sessionMedium",
-                                "stringFilter": {
-                                    "matchType": "EXACT", 
+                            "dimension_or_metric_filter": {
+                                "field_name": "sessionMedium",
+                                "string_filter": {
+                                    "match_type": "EXACT", 
                                     "value": "social"
                                 }
                             }
                         },
                         {
-                            "dimensionOrMetricFilter": {
-                                "fieldName": "sessionSource",
-                                "stringFilter": {
-                                    "matchType": "CONTAINS",
+                            "dimension_or_metric_filter": {
+                                "field_name": "sessionSource",
+                                "string_filter": {
+                                    "match_type": "CONTAINS",
                                     "value": "facebook"
                                 }
                             }
                         },
                         {
-                            "dimensionOrMetricFilter": {
-                                "fieldName": "sessionSource",
-                                "stringFilter": {
-                                    "matchType": "CONTAINS",
+                            "dimension_or_metric_filter": {
+                                "field_name": "sessionSource",
+                                "string_filter": {
+                                    "match_type": "CONTAINS",
                                     "value": "twitter"
                                 }
                             }
