@@ -15,7 +15,7 @@ CHANNEL_GROUP_DEFINITION = {
                 "or_group": {
                     "filter_expressions": [
                         {
-                            "filter": {
+                            "dimension_or_metric_filter": {
                                 "field_name": "sessionSource",
                                 "string_filter": {
                                     "match_type": "EXACT",
@@ -24,7 +24,7 @@ CHANNEL_GROUP_DEFINITION = {
                             }
                         },
                         {
-                            "filter": {
+                            "dimension_or_metric_filter": {
                                 "field_name": "sessionMedium", 
                                 "string_filter": {
                                     "match_type": "EXACT",
@@ -39,7 +39,7 @@ CHANNEL_GROUP_DEFINITION = {
         {
             "display_name": "Organic Search",
             "expression": {
-                "filter": {
+                "dimension_or_metric_filter": {
                     "field_name": "sessionMedium",
                     "string_filter": {
                         "match_type": "EXACT",
@@ -54,7 +54,7 @@ CHANNEL_GROUP_DEFINITION = {
                 "or_group": {
                     "filter_expressions": [
                         {
-                            "filter": {
+                            "dimension_or_metric_filter": {
                                 "field_name": "sessionMedium",
                                 "string_filter": {
                                     "match_type": "EXACT", 
@@ -63,11 +63,20 @@ CHANNEL_GROUP_DEFINITION = {
                             }
                         },
                         {
-                            "filter": {
+                            "dimension_or_metric_filter": {
                                 "field_name": "sessionSource",
                                 "string_filter": {
                                     "match_type": "CONTAINS",
                                     "value": "facebook"
+                                }
+                            }
+                        },
+                        {
+                            "dimension_or_metric_filter": {
+                                "field_name": "sessionSource",
+                                "string_filter": {
+                                    "match_type": "CONTAINS",
+                                    "value": "twitter"
                                 }
                             }
                         }
