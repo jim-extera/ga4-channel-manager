@@ -9,18 +9,80 @@ CHANNEL_GROUP_DEFINITION = {
     "displayName": "My Custom Marketing Channels",
     "description": "Custom channel group for primary marketing activities.",
     "groupingRule": [
-        # Esempio di regole - sostituisci con le tue
         {
             "displayName": "Direct",
-            "expression": "sessionSource == '(direct)' && sessionMedium == '(none)'"
+            "expression": {
+                "andGroup": {
+                    "expressions": [
+                        {
+                            "dimensionOrMetricFilter": {
+                                "fieldName": "sessionSource",
+                                "stringFilter": {
+                                    "matchType": "EXACT",
+                                    "value": "(direct)"
+                                }
+                            }
+                        },
+                        {
+                            "dimensionOrMetricFilter": {
+                                "fieldName": "sessionMedium", 
+                                "stringFilter": {
+                                    "matchType": "EXACT",
+                                    "value": "(none)"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
         },
         {
-            "displayName": "Organic Search", 
-            "expression": "sessionMedium == 'organic'"
+            "displayName": "Organic Search",
+            "expression": {
+                "dimensionOrMetricFilter": {
+                    "fieldName": "sessionMedium",
+                    "stringFilter": {
+                        "matchType": "EXACT",
+                        "value": "organic"
+                    }
+                }
+            }
         },
         {
             "displayName": "Social",
-            "expression": "sessionMedium == 'social' || sessionSource =~ '^(facebook|twitter|instagram|linkedin)'"
+            "expression": {
+                "orGroup": {
+                    "expressions": [
+                        {
+                            "dimensionOrMetricFilter": {
+                                "fieldName": "sessionMedium",
+                                "stringFilter": {
+                                    "matchType": "EXACT", 
+                                    "value": "social"
+                                }
+                            }
+                        },
+                        {
+                            "dimensionOrMetricFilter": {
+                                "fieldName": "sessionSource",
+                                "stringFilter": {
+                                    "matchType": "CONTAINS",
+                                    "value": "facebook"
+                                }
+                            }
+                        },
+                        {
+                            "dimensionOrMetricFilter": {
+                                "fieldName": "sessionSource",
+                                "stringFilter": {
+                                    "matchType": "CONTAINS",
+                                    "value": "twitter"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
         }
         # Aggiungi qui le tue altre regole personalizzate
     ]
