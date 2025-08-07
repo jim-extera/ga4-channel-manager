@@ -36,7 +36,7 @@ CHANNEL_GROUP_DEFINITION = {
                             }]
                 }
             }]
-        },
+        }}},
         {
             "display_name": "Organic Search",
             "expression": {
