@@ -9,34 +9,6 @@ CHANNEL_GROUP_DEFINITION = {
     "display_name": "My Custom Marketing Channels",
     "description": "Custom channel group for primary marketing activities.",
     "grouping_rule": [
-        {
-            "display_name": "Direct",
-            "expression": {
-                "and_group": {
-                    "filter_expressions": [
-                      # --- FIX: Condition 1 is now wrapped in its own or_group ---
-                        {
-                            "or_group": {
-                                "filter_expressions": [{
-                                    "filter": {
-                                        "field_name": "source",
-                                        "string_filter": {"match_type": "EXACT", "value": "(direct)"}
-                                    }
-                                }]
-                            }
-                        },
-                        # --- FIX: Condition 2 is now wrapped in its own or_group ---
-                        {
-                            "or_group": {
-                                "filter_expressions": [{
-                                    "filter": {
-                                        "field_name": "medium",
-                                        "string_filter": {"match_type": "EXACT", "value": "(none)"}
-                                }
-                            }]
-                }
-            }]
-        }}},
        {
             "display_name": "Organic Search",
             "expression": {
@@ -44,37 +16,6 @@ CHANNEL_GROUP_DEFINITION = {
                 "and_group": {
                     "filter_expressions": [
                         {"or_group": {"filter_expressions": [{"filter": {"field_name": "medium", "string_filter": {"match_type": "EXACT", "value": "organic"}}}]}}
-                    ]
-                }
-            }
-        },
-        {
-            "display_name": "Social",
-            "expression": {
-                "and_group": {
-                    "filter_expressions": [
-                      {
-                          "or_group": {
-                              "filter_expressions": [{
-                            "filter": {
-                                "field_name": "medium",
-                                "string_filter": {
-                                    "match_type": "EXACT", 
-                                    "value": "social"
-                                }
-                            }
-                        }]}},
-                          {
-                              "or_group": {
-                        "filter_expressions": [{ 
-                            "filter": {
-                                "field_name": "source",
-                                "string_filter": {
-                                    "match_type": "CONTAINS",
-                                    "value": "facebook"
-                                }
-                            }
-                        }]}}
                     ]
                 }
             }
