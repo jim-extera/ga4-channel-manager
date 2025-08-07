@@ -33,10 +33,9 @@ CHANNEL_GROUP_DEFINITION = {
                                         "field_name": "sessionMedium",
                                         "string_filter": {"match_type": "EXACT", "value": "(none)"}
                                 }
-                            }
-                    ]
+                            }]
                 }
-            }
+            }]
         },
         {
             "display_name": "Organic Search",
