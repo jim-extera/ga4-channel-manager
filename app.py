@@ -12,7 +12,7 @@ CHANNEL_GROUP_DEFINITION = {
         {
             "display_name": "Direct",
             "expression": {
-                "and_group": {
+                "or_group": {
                     "filter_expressions": [
                         {
                             "filter": {
