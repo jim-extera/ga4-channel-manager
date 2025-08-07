@@ -1,5 +1,7 @@
 import streamlit as st
 import json
+import os
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'path/to/your/service-account-key.json'
 from google.analytics.admin_v1.types import CustomChannelGroup
 from google.analytics.admin import AnalyticsAdminServiceClient
 from google.api_core import exceptions
