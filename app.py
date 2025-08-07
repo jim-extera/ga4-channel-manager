@@ -56,7 +56,7 @@ CHANNEL_GROUP_DEFINITION = {
                     "filter_expressions": [
                       {
                           "or_group": {
-                          {
+                              "filter_expressions": [{
                             "filter": {
                                 "field_name": "sessionMedium",
                                 "string_filter": {
@@ -64,10 +64,10 @@ CHANNEL_GROUP_DEFINITION = {
                                     "value": "social"
                                 }
                             }
-                        }}},
+                        }]}},
                           {
                               "or_group": {
-                        {
+                        "filter_expressions": [{ 
                             "filter": {
                                 "field_name": "sessionSource",
                                 "string_filter": {
@@ -75,7 +75,7 @@ CHANNEL_GROUP_DEFINITION = {
                                     "value": "facebook"
                                 }
                             }
-                        }}}
+                        }]}}
                     ]
                 }
             }
