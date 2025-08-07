@@ -37,15 +37,14 @@ CHANNEL_GROUP_DEFINITION = {
                 }
             }]
         }}},
-        {
+       {
             "display_name": "Organic Search",
             "expression": {
-                "filter": {
-                    "field_name": "sessionMedium",
-                    "string_filter": {
-                        "match_type": "EXACT",
-                        "value": "organic"
-                    }
+                # --- FIX: This rule is now correctly wrapped in a top-level and_group ---
+                "and_group": {
+                    "filter_expressions": [
+                        {"or_group": {"filter_expressions": [{"filter": {"field_name": "sessionMedium", "string_filter": {"match_type": "EXACT", "value": "organic"}}}]}}
+                    ]
                 }
             }
         },
