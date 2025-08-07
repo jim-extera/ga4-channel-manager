@@ -1,4 +1,4 @@
-import streamlit as st
+import as st
 import json
 import requests
 from google.oauth2.service_account import Credentials
@@ -52,9 +52,11 @@ CHANNEL_GROUP_DEFINITION = {
         {
             "display_name": "Social",
             "expression": {
-                "or_group": {
+                "and_group": {
                     "filter_expressions": [
-                        {
+                      {
+                          "or_group": {
+                          {
                             "filter": {
                                 "field_name": "sessionMedium",
                                 "string_filter": {
@@ -62,7 +64,9 @@ CHANNEL_GROUP_DEFINITION = {
                                     "value": "social"
                                 }
                             }
-                        },
+                        }}},
+                          {
+                              "or_group": {
                         {
                             "filter": {
                                 "field_name": "sessionSource",
@@ -71,7 +75,7 @@ CHANNEL_GROUP_DEFINITION = {
                                     "value": "facebook"
                                 }
                             }
-                        }
+                        }}}
                     ]
                 }
             }
