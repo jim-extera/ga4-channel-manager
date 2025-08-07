@@ -12,39 +12,15 @@ CHANNEL_GROUP_DEFINITION = {
         # Esempio di regole - sostituisci con le tue
         {
             "displayName": "Direct",
-            "channelGrouping": [
-                {
-                    "conditions": [
-                        {
-                            "filter": {
-                                "fieldName": "sessionSource",
-                                "stringFilter": {
-                                    "matchType": "EXACT",
-                                    "value": "(direct)"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+            "expression": "sessionSource == '(direct)' && sessionMedium == '(none)'"
         },
         {
-            "displayName": "Organic Search",
-            "channelGrouping": [
-                {
-                    "conditions": [
-                        {
-                            "filter": {
-                                "fieldName": "sessionMedium",
-                                "stringFilter": {
-                                    "matchType": "EXACT",
-                                    "value": "organic"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+            "displayName": "Organic Search", 
+            "expression": "sessionMedium == 'organic'"
+        },
+        {
+            "displayName": "Social",
+            "expression": "sessionMedium == 'social' || sessionSource =~ '^(facebook|twitter|instagram|linkedin)'"
         }
         # Aggiungi qui le tue altre regole personalizzate
     ]
@@ -72,8 +48,8 @@ def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
         # Ottieni il token di accesso
         access_token = get_access_token(credentials_info)
         
-        # URL dell'API GA4 Admin
-        url = f"https://analyticsadmin.googleapis.com/v1/properties/{property_id}/customChannelGroups"
+        # URL dell'API GA4 Admin - Prova con v1alpha e channelGroups
+        url = f"https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/channelGroups"
         
         # Headers per la richiesta
         headers = {
