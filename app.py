@@ -84,21 +84,35 @@ def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
         # Payload con la definizione del channel group
         payload = CHANNEL_GROUP_DEFINITION
         
+        # Debug info
+        st.write(f"🔍 Debug: Making request to {url}")
+        st.write(f"🔍 Debug: Headers (token masked): Authorization: Bearer {access_token[:20]}...")
+        
         # Effettua la richiesta POST
         response = requests.post(url, headers=headers, json=payload)
+        
+        # Debug della risposta
+        st.write(f"🔍 Debug: Response status code: {response.status_code}")
+        st.write(f"🔍 Debug: Response headers: {dict(response.headers)}")
+        st.write(f"🔍 Debug: Raw response content: {response.content}")
         
         if response.status_code == 200:
             result = response.json()
             return f"✅ Success! Channel group created with name: {result.get('name', 'Unknown')}"
         else:
-            error_details = response.json() if response.content else {}
-            error_message = error_details.get('error', {}).get('message', 'Unknown error')
-            raise Exception(f"🔴 API Error (Status {response.status_code}): {error_message}")
+            # Prova a ottenere dettagli dell'errore
+            try:
+                error_details = response.json()
+                error_message = error_details.get('error', {}).get('message', 'Unknown error')
+                error_code = error_details.get('error', {}).get('code', 'Unknown code')
+                raise Exception(f"🔴 API Error (Status {response.status_code}, Code {error_code}): {error_message}")
+            except json.JSONDecodeError:
+                raise Exception(f"🔴 API Error (Status {response.status_code}): Response is not valid JSON. Raw content: {response.content}")
             
     except requests.exceptions.RequestException as e:
         raise Exception(f"🔴 Network error: {str(e)}")
-    except json.JSONDecodeError:
-        raise Exception("🔴 Invalid JSON response from API")
+    except json.JSONDecodeError as e:
+        raise Exception(f"🔴 JSON decode error: {str(e)}. This usually means the API returned an empty or invalid response.")
     except Exception as e:
         if "Permission denied" in str(e):
             raise Exception(f"🔴 ERROR: Permission denied for property {property_id}. Ensure the service account has 'Editor' role.")
