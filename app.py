@@ -1,57 +1,119 @@
 import streamlit as st
 import json
-from google.analytics.admin_v1.types import CustomChannelGroup
-from google.analytics.admin import AnalyticsAdminServiceClient
-from google.api_core import exceptions
+import requests
 from google.oauth2.service_account import Credentials
+from google.auth.transport.requests import Request
 
 # --- YOUR CUSTOM CHANNEL GROUP DEFINITION ---
-# This part is the same as our original script.
 CHANNEL_GROUP_DEFINITION = {
-    "display_name": "My Custom Marketing Channels",
+    "displayName": "My Custom Marketing Channels",
     "description": "Custom channel group for primary marketing activities.",
-    "system_defined": False,
-    "grouping_rule": [
-        # ... (Your rules go here, same as before)
+    "groupingRule": [
+        # Esempio di regole - sostituisci con le tue
+        {
+            "displayName": "Direct",
+            "channelGrouping": [
+                {
+                    "conditions": [
+                        {
+                            "filter": {
+                                "fieldName": "sessionSource",
+                                "stringFilter": {
+                                    "matchType": "EXACT",
+                                    "value": "(direct)"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "displayName": "Organic Search",
+            "channelGrouping": [
+                {
+                    "conditions": [
+                        {
+                            "filter": {
+                                "fieldName": "sessionMedium",
+                                "stringFilter": {
+                                    "matchType": "EXACT",
+                                    "value": "organic"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+        # Aggiungi qui le tue altre regole personalizzate
     ]
 }
 
-# This is our core function, slightly adapted for Streamlit.
-# It now takes credentials as an argument instead of reading from a file path.
-def create_custom_channel_group(property_id: str, credentials_info: dict):
+def get_access_token(credentials_info: dict):
     """
-    Creates a Custom Channel Group on a specified GA4 property.
+    Ottiene un access token usando le credenziali del service account.
+    """
+    credentials = Credentials.from_service_account_info(
+        credentials_info,
+        scopes=["https://www.googleapis.com/auth/analytics.edit"],
+    )
+    
+    # Refresh the credentials to get an access token
+    request = Request()
+    credentials.refresh(request)
+    return credentials.token
+
+def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
+    """
+    Crea un Custom Channel Group usando le API REST di GA4.
     """
     try:
-        credentials = Credentials.from_service_account_info(
-            credentials_info,
-            scopes=["https://www.googleapis.com/auth/analytics.edit"],
-        )
+        # Ottieni il token di accesso
+        access_token = get_access_token(credentials_info)
         
-        client = AnalyticsAdminServiceClient(credentials=credentials)
-        channel_group = CustomChannelGroup(
-            display_name=CHANNEL_GROUP_DEFINITION["display_name"],
-            description=CHANNEL_GROUP_DEFINITION["description"],
-            system_defined=CHANNEL_GROUP_DEFINITION["system_defined"],
-            grouping_rule=CHANNEL_GROUP_DEFINITION["grouping_rule"],
-        )
-        request = client.create_custom_channel_group(
-            parent=f"properties/{property_id}",
-            custom_channel_group=channel_group,
-        )
-        # Instead of printing, we return a success message.
-        return f"✅ Success! Channel group created with name: {request.name}"
-    except exceptions.PermissionDenied:
-        raise Exception(f"🔴 ERROR: Permission denied for property {property_id}. Ensure the service account has 'Editor' role.")
-    except exceptions.InvalidArgument as e:
-        raise Exception(f"🔴 ERROR: Invalid argument. Check your rule syntax. API Message: {e.message}")
+        # URL dell'API GA4 Admin
+        url = f"https://analyticsadmin.googleapis.com/v1/properties/{property_id}/customChannelGroups"
+        
+        # Headers per la richiesta
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json",
+        }
+        
+        # Payload con la definizione del channel group
+        payload = CHANNEL_GROUP_DEFINITION
+        
+        # Effettua la richiesta POST
+        response = requests.post(url, headers=headers, json=payload)
+        
+        if response.status_code == 200:
+            result = response.json()
+            return f"✅ Success! Channel group created with name: {result.get('name', 'Unknown')}"
+        else:
+            error_details = response.json() if response.content else {}
+            error_message = error_details.get('error', {}).get('message', 'Unknown error')
+            raise Exception(f"🔴 API Error (Status {response.status_code}): {error_message}")
+            
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"🔴 Network error: {str(e)}")
+    except json.JSONDecodeError:
+        raise Exception("🔴 Invalid JSON response from API")
     except Exception as e:
-        raise Exception(f"🔴 An unexpected error occurred: {e}")
+        if "Permission denied" in str(e):
+            raise Exception(f"🔴 ERROR: Permission denied for property {property_id}. Ensure the service account has 'Editor' role.")
+        else:
+            raise Exception(f"🔴 An unexpected error occurred: {e}")
 
 # --- Streamlit Web Interface ---
 st.set_page_config(page_title="GA4 Channel Group Creator", layout="centered")
 st.title("GA4 Custom Channel Group Creator 🚀")
 st.info("This tool uses the GA4 Admin API to create a predefined Custom Channel Group on the property you specify.")
+
+# Mostra le regole attuali configurate
+with st.expander("📋 Current Channel Group Rules"):
+    st.json(CHANNEL_GROUP_DEFINITION)
+    st.caption("You can modify these rules in the app.py file")
 
 # Create a form for user input
 with st.form("ga4_form"):
@@ -70,9 +132,17 @@ if submitted:
         try:
             # Securely load credentials from Streamlit's secrets manager
             creds = st.secrets["gcp_service_account"]
+            
             with st.spinner(f"Creating channel group on property {property_id_input}..."):
                 # Call our main function with the user's input
-                success_message = create_custom_channel_group(property_id_input, creds)
+                success_message = create_custom_channel_group_rest(property_id_input, creds)
                 st.success(success_message)
+                
+        except KeyError:
+            st.error("🔴 ERROR: GCP service account credentials not found in secrets. Please check your Streamlit secrets configuration.")
         except Exception as e:
             st.error(str(e))
+
+# Debug info (rimuovi in produzione)
+if st.checkbox("Show debug info"):
+    st.write("Python version:", st.write("Environment is working correctly!"))
