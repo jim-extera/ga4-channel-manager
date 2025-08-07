@@ -1,6 +1,4 @@
 streamlit
-google-analytics-admin
+google-cloud-analytics-admin
 google-auth
 google-auth-oauthlib
-google-auth-httplib2
-protobuf
