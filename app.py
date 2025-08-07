@@ -1,4 +1,4 @@
-import as st
+import streamlit as st
 import json
 import requests
 from google.oauth2.service_account import Credentials
