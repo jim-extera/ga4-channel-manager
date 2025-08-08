@@ -19,7 +19,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "source",
+                                            "field_name": "firstUserSource",
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "(direct)"
@@ -34,7 +34,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "medium", 
+                                            "field_name": "firstUserMedium", 
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "(none)"
@@ -58,7 +58,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "medium",
+                                            "field_name": "firstUserMedium",
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "organic"
@@ -71,41 +71,8 @@ CHANNEL_GROUP_DEFINITION = {
                     ]
                 }
             }
-        },
-        {
-            "display_name": "Social",
-            "expression": {
-                "and_group": {
-                    "filter_expressions": [
-                        {
-                            "or_group": {
-                                "filter_expressions": [
-                                    {
-                                        "filter": {
-                                            "field_name": "medium",
-                                            "string_filter": {
-                                                "match_type": "EXACT", 
-                                                "value": "social"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "filter": {
-                                            "field_name": "source",
-                                            "string_filter": {
-                                                "match_type": "CONTAINS",
-                                                "value": "facebook"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
         }
-        # Aggiungi qui le tue altre regole personalizzate
+        # Rimuovo temporaneamente Social per testare con meno regole
     ]
 }
 
