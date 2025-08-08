@@ -5,10 +5,10 @@ from google.oauth2.service_account import Credentials
 from google.auth.transport.requests import Request
 
 # --- YOUR CUSTOM CHANNEL GROUP DEFINITION ---
-# Provo con dimensioni molto basilari - una alla volta per debugging
+# Provo con i nomi di campo più basilari possibili
 CHANNEL_GROUP_DEFINITION = {
     "display_name": "Test Channel Group",
-    "description": "Simple test for finding correct field names.",
+    "description": "Testing field names.",
     "grouping_rule": [
         {
             "display_name": "Test Rule",
@@ -20,9 +20,9 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "sourceMedium",
+                                            "field_name": "utm_source",
                                             "string_filter": {
-                                                "match_type": "CONTAINS",
+                                                "match_type": "EXACT",
                                                 "value": "direct"
                                             }
                                         }
@@ -34,7 +34,6 @@ CHANNEL_GROUP_DEFINITION = {
                 }
             }
         }
-        # Solo una regola semplice per il test
     ]
 }
 
