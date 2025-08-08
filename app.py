@@ -5,12 +5,13 @@ from google.oauth2.service_account import Credentials
 from google.auth.transport.requests import Request
 
 # --- YOUR CUSTOM CHANNEL GROUP DEFINITION ---
+# Provo con dimensioni molto basilari - una alla volta per debugging
 CHANNEL_GROUP_DEFINITION = {
-    "display_name": "My Custom Marketing Channels",
-    "description": "Custom channel group for primary marketing activities.",
+    "display_name": "Test Channel Group",
+    "description": "Simple test for finding correct field names.",
     "grouping_rule": [
         {
-            "display_name": "Direct",
+            "display_name": "Test Rule",
             "expression": {
                 "and_group": {
                     "filter_expressions": [
@@ -19,49 +20,10 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "trafficSource.source",
+                                            "field_name": "sourceMedium",
                                             "string_filter": {
-                                                "match_type": "EXACT",
-                                                "value": "(direct)"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "or_group": {
-                                "filter_expressions": [
-                                    {
-                                        "filter": {
-                                            "field_name": "trafficSource.medium", 
-                                            "string_filter": {
-                                                "match_type": "EXACT",
-                                                "value": "(none)"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "display_name": "Organic Search",
-            "expression": {
-                "and_group": {
-                    "filter_expressions": [
-                        {
-                            "or_group": {
-                                "filter_expressions": [
-                                    {
-                                        "filter": {
-                                            "field_name": "trafficSource.medium",
-                                            "string_filter": {
-                                                "match_type": "EXACT",
-                                                "value": "organic"
+                                                "match_type": "CONTAINS",
+                                                "value": "direct"
                                             }
                                         }
                                     }
@@ -72,7 +34,7 @@ CHANNEL_GROUP_DEFINITION = {
                 }
             }
         }
-        # Rimuovo temporaneamente Social per testare con meno regole
+        # Solo una regola semplice per il test
     ]
 }
 
