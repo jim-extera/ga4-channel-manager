@@ -1,2 +1,2 @@
 streamlit
-google-analytics-admin>=0.20.0
+google-analytics-admin
