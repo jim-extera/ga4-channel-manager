@@ -1,2 +1,4 @@
 streamlit
-google-analytics-admin
+requests
+google-auth
+google-auth-oauthlib
