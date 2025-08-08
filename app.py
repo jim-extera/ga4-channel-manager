@@ -5,7 +5,7 @@ from google.api_core import exceptions
 from google.oauth2.service_account import Credentials
 
 # --- YOUR CUSTOM CHANNEL GROUP DEFINITION ---
-# This dictionary will be passed to the CustomChannelGroup constructor
+# This is a simpler dictionary structure that the client library understands.
 CHANNEL_GROUP_DEFINITION = {
     "display_name": "My Custom Marketing Channels",
     "description": "Custom channel group for primary marketing activities.",
@@ -49,7 +49,7 @@ def create_custom_channel_group(property_id: str, credentials_info: dict):
         )
         client = AnalyticsAdminServiceClient(credentials=credentials)
         
-        # The client library handles the complex JSON structure automatically.
+        # The client library automatically builds the complex objects.
         channel_group = CustomChannelGroup(
             display_name=CHANNEL_GROUP_DEFINITION["display_name"],
             description=CHANNEL_GROUP_DEFINITION["description"],
