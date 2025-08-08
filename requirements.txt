@@ -1,4 +1,2 @@
 streamlit
-requests
-google-auth
-google-auth-oauthlib
+google-analytics-admin>=0.20.0
