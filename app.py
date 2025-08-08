@@ -19,7 +19,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "sessionSource",
+                                            "field_name": "source",
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "(direct)"
@@ -34,7 +34,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "sessionMedium", 
+                                            "field_name": "medium", 
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "(none)"
@@ -58,7 +58,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "sessionMedium",
+                                            "field_name": "medium",
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "organic"
@@ -82,7 +82,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "sessionMedium",
+                                            "field_name": "medium",
                                             "string_filter": {
                                                 "match_type": "EXACT", 
                                                 "value": "social"
@@ -91,7 +91,7 @@ CHANNEL_GROUP_DEFINITION = {
                                     },
                                     {
                                         "filter": {
-                                            "field_name": "sessionSource",
+                                            "field_name": "source",
                                             "string_filter": {
                                                 "match_type": "CONTAINS",
                                                 "value": "facebook"
