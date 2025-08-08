@@ -19,7 +19,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "firstUserSource",
+                                            "field_name": "sessionSource",
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "(direct)"
@@ -34,7 +34,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "firstUserMedium", 
+                                            "field_name": "sessionMedium", 
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "(none)"
@@ -58,7 +58,7 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "firstUserMedium",
+                                            "field_name": "sessionMedium",
                                             "string_filter": {
                                                 "match_type": "EXACT",
                                                 "value": "organic"
