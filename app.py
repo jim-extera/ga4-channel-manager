@@ -51,7 +51,40 @@ def get_access_token(credentials_info: dict):
     credentials.refresh(request)
     return credentials.token
 
-def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
+def list_existing_channel_groups(property_id: str, credentials_info: dict):
+    """
+    Lista i channel groups esistenti per vedere la loro struttura.
+    """
+    try:
+        # Ottieni il token di accesso
+        access_token = get_access_token(credentials_info)
+        
+        # URL dell'API GA4 Admin per listare channel groups
+        url = f"https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/channelGroups"
+        
+        # Headers per la richiesta
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+        }
+        
+        # Effettua la richiesta GET
+        response = requests.get(url, headers=headers)
+        
+        st.write(f"🔍 List Debug: Response status code: {response.status_code}")
+        
+        if response.status_code == 200:
+            result = response.json()
+            st.write("📋 Existing Channel Groups:")
+            st.json(result)
+            return result
+        else:
+            error_details = response.json() if response.content else {}
+            st.error(f"Error listing channel groups: {error_details}")
+            return None
+            
+    except Exception as e:
+        st.error(f"🔴 Error listing channel groups: {e}")
+        return None
     """
     Crea un Custom Channel Group usando le API REST di GA4.
     """
@@ -123,7 +156,12 @@ with st.form("ga4_form"):
         placeholder="e.g., 123456789",
         help="You can find this ID in your GA4 property settings."
     )
-    submitted = st.form_submit_button("Create Channel Group")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        submitted = st.form_submit_button("Create Channel Group")
+    with col2:
+        list_existing = st.form_submit_button("List Existing Channel Groups")
 
 # This block runs when the user clicks the button
 if submitted:
@@ -141,6 +179,22 @@ if submitted:
                 
         except KeyError:
             st.error("🔴 ERROR: GCP service account credentials not found in secrets. Please check your Streamlit secrets configuration.")
+        except Exception as e:
+            st.error(str(e))
+
+# Handle the "List Existing" button
+if list_existing:
+    if not property_id_input:
+        st.warning("Please enter a Property ID.")
+    else:
+        try:
+            creds = st.secrets["gcp_service_account"]
+            
+            with st.spinner(f"Fetching existing channel groups from property {property_id_input}..."):
+                result = list_existing_channel_groups(property_id_input, creds)
+                
+        except KeyError:
+            st.error("🔴 ERROR: GCP service account credentials not found in secrets.")
         except Exception as e:
             st.error(str(e))
 
