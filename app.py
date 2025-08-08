@@ -51,15 +51,21 @@ CHANNEL_GROUP_DEFINITION = {
         {
             "display_name": "Organic Search",
             "expression": {
-                "or_group": {
+                "and_group": {
                     "filter_expressions": [
                         {
-                            "filter": {
-                                "field_name": "sessionMedium",
-                                "string_filter": {
-                                    "match_type": "EXACT",
-                                    "value": "organic"
-                                }
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "sessionMedium",
+                                            "string_filter": {
+                                                "match_type": "EXACT",
+                                                "value": "organic"
+                                            }
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ]
@@ -69,24 +75,30 @@ CHANNEL_GROUP_DEFINITION = {
         {
             "display_name": "Social",
             "expression": {
-                "or_group": {
+                "and_group": {
                     "filter_expressions": [
                         {
-                            "filter": {
-                                "field_name": "sessionMedium",
-                                "string_filter": {
-                                    "match_type": "EXACT", 
-                                    "value": "social"
-                                }
-                            }
-                        },
-                        {
-                            "filter": {
-                                "field_name": "sessionSource",
-                                "string_filter": {
-                                    "match_type": "CONTAINS",
-                                    "value": "facebook"
-                                }
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "sessionMedium",
+                                            "string_filter": {
+                                                "match_type": "EXACT", 
+                                                "value": "social"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "sessionSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "facebook"
+                                            }
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ]
