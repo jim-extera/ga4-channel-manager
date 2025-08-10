@@ -5,13 +5,13 @@ from google.oauth2.service_account import Credentials
 from google.auth.transport.requests import Request
 
 # --- YOUR CUSTOM CHANNEL GROUP DEFINITION ---
-# Proviamo con nomi che potrebbero essere usati internamente per i channel groups
+# Ora con i field_name corretti: eachScopeSource e eachScopeMedium
 CHANNEL_GROUP_DEFINITION = {
-    "display_name": "Test Channel Group", 
-    "description": "Testing field names for channel grouping.",
+    "display_name": "Extera Channel Group Custom",
+    "description": "Custom channel group replicating Extera structure for all properties.",
     "grouping_rule": [
         {
-            "display_name": "Test Rule",
+            "display_name": "Direct",
             "expression": {
                 "and_group": {
                     "filter_expressions": [
@@ -20,10 +20,196 @@ CHANNEL_GROUP_DEFINITION = {
                                 "filter_expressions": [
                                     {
                                         "filter": {
-                                            "field_name": "sessionDefaultChannelGrouping",
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "direct"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeMedium",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "none"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "display_name": "Google Ads",
+            "expression": {
+                "and_group": {
+                    "filter_expressions": [
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
                                             "string_filter": {
                                                 "match_type": "EXACT",
-                                                "value": "Direct"
+                                                "value": "google"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeMedium",
+                                            "string_filter": {
+                                                "match_type": "EXACT",
+                                                "value": "cpc"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "display_name": "Meta Ads",
+            "expression": {
+                "and_group": {
+                    "filter_expressions": [
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "facebook"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "instagram"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "social"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "stories"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "fb"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeMedium",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "cpc"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeMedium",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "paid"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeMedium",
+                                            "string_filter": {
+                                                "match_type": "CONTAINS",
+                                                "value": "paidsocial"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "display_name": "Google Organic",
+            "expression": {
+                "and_group": {
+                    "filter_expressions": [
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeSource",
+                                            "string_filter": {
+                                                "match_type": "EXACT",
+                                                "value": "google"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "or_group": {
+                                "filter_expressions": [
+                                    {
+                                        "filter": {
+                                            "field_name": "eachScopeMedium",
+                                            "string_filter": {
+                                                "match_type": "EXACT",
+                                                "value": "organic"
                                             }
                                         }
                                     }
@@ -34,6 +220,7 @@ CHANNEL_GROUP_DEFINITION = {
                 }
             }
         }
+        # Puoi aggiungere qui le altre regole seguendo lo stesso pattern
     ]
 }
 
@@ -105,16 +292,16 @@ def list_existing_channel_groups(property_id: str, credentials_info: dict):
         payload = CHANNEL_GROUP_DEFINITION
         
         # Debug info
-        st.write(f"🔍 Debug: Making request to {url}")
-        st.write(f"🔍 Debug: Headers (token masked): Authorization: Bearer {access_token[:20]}...")
+        # st.write(f"🔍 Debug: Making request to {url}")
+        # st.write(f"🔍 Debug: Headers (token masked): Authorization: Bearer {access_token[:20]}...")
         
         # Effettua la richiesta POST
         response = requests.post(url, headers=headers, json=payload)
         
         # Debug della risposta
-        st.write(f"🔍 Debug: Response status code: {response.status_code}")
-        st.write(f"🔍 Debug: Response headers: {dict(response.headers)}")
-        st.write(f"🔍 Debug: Raw response content: {response.content}")
+        # st.write(f"🔍 Debug: Response status code: {response.status_code}")
+        # st.write(f"🔍 Debug: Response headers: {dict(response.headers)}")
+        # st.write(f"🔍 Debug: Raw response content: {response.content}")
         
         if response.status_code == 200:
             result = response.json()
