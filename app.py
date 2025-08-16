@@ -272,6 +272,11 @@ def list_existing_channel_groups(property_id: str, credentials_info: dict):
     except Exception as e:
         st.error(f"🔴 Error listing channel groups: {e}")
         return None
+
+# <<< CORREZIONE INIZIA QUI
+# Ho aggiunto la definizione della funzione qui
+def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
+# Ho indentato tutto il blocco di codice sottostante
     """
     Crea un Custom Channel Group usando le API REST di GA4.
     """
@@ -289,19 +294,14 @@ def list_existing_channel_groups(property_id: str, credentials_info: dict):
         }
         
         # Payload con la definizione del channel group
-        payload = CHANNEL_GROUP_DEFINITION
-        
-        # Debug info
-        # st.write(f"🔍 Debug: Making request to {url}")
-        # st.write(f"🔍 Debug: Headers (token masked): Authorization: Bearer {access_token[:20]}...")
+        payload = {
+            "display_name": CHANNEL_GROUP_DEFINITION["display_name"],
+            "description": CHANNEL_GROUP_DEFINITION["description"],
+            "grouping_rule": CHANNEL_GROUP_DEFINITION["grouping_rule"]
+        }
         
         # Effettua la richiesta POST
-        response = requests.post(url, headers=headers, json=payload)
-        
-        # Debug della risposta
-        # st.write(f"🔍 Debug: Response status code: {response.status_code}")
-        # st.write(f"🔍 Debug: Response headers: {dict(response.headers)}")
-        # st.write(f"🔍 Debug: Raw response content: {response.content}")
+        response = requests.post(url, headers=headers, data=json.dumps({"channel_group": payload}))
         
         if response.status_code == 200:
             result = response.json()
@@ -325,6 +325,7 @@ def list_existing_channel_groups(property_id: str, credentials_info: dict):
             raise Exception(f"🔴 ERROR: Permission denied for property {property_id}. Ensure the service account has 'Editor' role.")
         else:
             raise Exception(f"🔴 An unexpected error occurred: {e}")
+# <<< CORREZIONE FINISCE QUI
 
 # --- Streamlit Web Interface ---
 st.set_page_config(page_title="GA4 Channel Group Creator", layout="centered")
@@ -333,7 +334,7 @@ st.info("This tool uses the GA4 Admin API to create a predefined Custom Channel 
 
 # Mostra le regole attuali configurate
 with st.expander("📋 Current Channel Group Rules"):
-    st.json(CHANNEL_GROUP_DEFINITION)
+    st.json(CHANNEL_GROUP_DEFINITION["grouping_rule"])
     st.caption("You can modify these rules in the app.py file")
 
 # Create a form for user input
@@ -384,7 +385,3 @@ if list_existing:
             st.error("🔴 ERROR: GCP service account credentials not found in secrets.")
         except Exception as e:
             st.error(str(e))
-
-# Debug info (rimuovi in produzione)
-if st.checkbox("Show debug info"):
-    st.write("Python version:", st.write("Environment is working correctly!"))
