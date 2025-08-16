@@ -275,8 +275,8 @@ def list_existing_channel_groups(property_id: str, credentials_info: dict):
 
 # <<< CORREZIONE INIZIA QUI
 # Ho aggiunto la definizione della funzione qui
+# Sostituisci la vecchia funzione con questa
 def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
-# Ho indentato tutto il blocco di codice sottostante
     """
     Crea un Custom Channel Group usando le API REST di GA4.
     """
@@ -284,7 +284,7 @@ def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
         # Ottieni il token di accesso
         access_token = get_access_token(credentials_info)
         
-        # URL dell'API GA4 Admin - Prova con v1alpha e channelGroups
+        # URL dell'API GA4 Admin
         url = f"https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/channelGroups"
         
         # Headers per la richiesta
@@ -293,21 +293,21 @@ def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
             "Content-Type": "application/json",
         }
         
-        # Payload con la definizione del channel group
+        # Payload con la definizione del channel group (non più dentro una chiave "channel_group")
         payload = {
             "display_name": CHANNEL_GROUP_DEFINITION["display_name"],
             "description": CHANNEL_GROUP_DEFINITION["description"],
             "grouping_rule": CHANNEL_GROUP_DEFINITION["grouping_rule"]
         }
         
-        # Effettua la richiesta POST
-        response = requests.post(url, headers=headers, data=json.dumps({"channel_group": payload}))
+        # <<< LA CORREZIONE È IN QUESTA RIGA >>>
+        # Usiamo il parametro 'json' che gestisce tutto in automatico, senza json.dumps()
+        response = requests.post(url, headers=headers, json=payload)
         
         if response.status_code == 200:
             result = response.json()
             return f"✅ Success! Channel group created with name: {result.get('name', 'Unknown')}"
         else:
-            # Prova a ottenere dettagli dell'errore
             try:
                 error_details = response.json()
                 error_message = error_details.get('error', {}).get('message', 'Unknown error')
@@ -318,8 +318,6 @@ def create_custom_channel_group_rest(property_id: str, credentials_info: dict):
             
     except requests.exceptions.RequestException as e:
         raise Exception(f"🔴 Network error: {str(e)}")
-    except json.JSONDecodeError as e:
-        raise Exception(f"🔴 JSON decode error: {str(e)}. This usually means the API returned an empty or invalid response.")
     except Exception as e:
         if "Permission denied" in str(e):
             raise Exception(f"🔴 ERROR: Permission denied for property {property_id}. Ensure the service account has 'Editor' role.")
