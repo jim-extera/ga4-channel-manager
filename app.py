@@ -79,8 +79,17 @@ def create_channel_group(property_id: str, credentials_info: dict, channel_group
 ## 2. INTERFACCIA STREAMLIT (MODIFICATA CON TABS)
 
 st.set_page_config(page_title="GA4 Channel Group Copier", layout="centered")
-st.title("GA4 Channel Group Copier 🚀")
-st.info("Copia un Custom Channel Group da una proprietà GA4 sorgente a una di destinazione.")
+st.title("GA4 Channel Group Manager 🚀")
+st.info("""
+Con questo tool, puoi copiare un Custom Channel Group da una proprietà GA4 sorgente a una di destinazione, oppure usate il template predefinito.
+Istruzioni:
+* Assicurati di inserire su tutti gli account GA4 che vuoi utilizzare questa email come utente editor della proprietà: ga4-channel-manager@extera-1.iam.gserviceaccount.com
+* Vai nella sezione Dettagli Proprietà e copia l'ID proprietà in alto a destra: è quello che dovrai usare come sorgente o come destinazione
+* Hai due modalità di funzionamento a disposizione: una ti permette di copiare un Raggruppamento canali personalizzato da un account GA4 per incollarlo in un altro, mentre la seconda sfrutta quello più completo ad oggi realizzato in Extera
+
+Buon Divertimento!
+ 
+""")
 
 # Inizializzazione Session State
 if 'templates' not in st.session_state:
